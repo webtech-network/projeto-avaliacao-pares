@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.4/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.2/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <title>Sistema de Avaliação por Pares 2.0  - CANVAS PUC Minas</title>
+</head>
+<body>
+
+    <div class="carregar"></div>
+    
+    <nav class="navbar navbar-icon-top navbar-expand-lg navbar-dark fixed-top">
+        <h3>Sistema de Avaliação por Pares</h3>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="text" id="token" placeholder="Token" aria-label="Token" data-ignore-unsaved="true">
+                <input class="form-control mr-sm-2" type="text" id="course" placeholder="Curso (Course)" aria-label="Curso (Course)" data-ignore-unsaved="true">
+                <input class="form-control mr-sm-2" type="text" id="assignment" placeholder="Atividade (Assignment)" aria-label="Atividade (Assignments)" data-ignore-unsaved="true">
+                <button class="btn btn-outline-primary my-2 my-sm-0" id="bt_Abrir" type="button">Abrir</button>
+            </form>
+        </div>
+    </nav>
+    
+    <div class="modal fade" id="ModalConfirma" tabindex="-1" role="dialog" aria-labelledby="ModalConfirma" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Enviar notas para o Canvas?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Essa operação enviará as notas alteradas pra o LMS Canvas, deseja continuar? Essa alteração irá sobrepor qualquer nota lançada via plataforma.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" id="bt_Gravar" data-dismiss="modal" class="btn btn-primary">Enviar Notas</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container aguardando">
+    
+        <div class="row">
+            <div class="col-12">
+                <div class="alert alert-info" role="alert">
+                    Aguardando os dados para processar a avaliação de pares.
+                </div>
+            </div>
+        </div>
+    
+    </div>
+    
+    <div class="container-fluid principal">
+        <div class="row">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-12 legenda2">
+                        <p style="width: 100%; float: left;"><strong>Dados da Atividade:</strong></p>
+                        <span><i class="fas fa-university"></i>&nbsp;Curso: <strong id="curso_text">---</strong></span>
+                        <span><i class="fas fa-clipboard-check"></i>&nbsp;Atividade: <strong id="atividade_text">---</strong></span>
+                        <span><i class="fas fa-tasks"></i>&nbsp;Nota máxima: <strong id="nota_text">---</strong></span>
+                    </div>
+    
+                    <div class="col-12">
+                        <hr style="margin-top: 20px; margin-bottom: 20px;">
+                    </div>
+    
+                    <div class="col-6 legenda">
+                        <span style="width: 100%; float: left;"><strong>Legenda:</strong></span>
+                        <span style="background: #FFE4E4;">Não entregou a atividade</span>
+                        <span style="background: #ffdfb0;">Não recebeu avaliação dos pares</span>
+                        <span style="background: #E6FFE4;">Tudo OK</span>
+                    </div>
+                    <div class="col-6 botoes_acao">
+                        <button class="btn btn-danger" id="bt_Limpar">Limpar Notas</button>
+                        <button class="btn btn-danger" id="bt_Penalidades">Aplicar Penalidades</button>
+                        <button class="btn btn-primary" id="bt_Copiar">Copiar Médias</button>
+                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#ModalConfirma">
+                            Enviar para o Canvas
+                        </button>
+                    </div>
+                    <div class="col-12">
+                        <hr style="margin-top: 20px; margin-bottom: 20px;">
+                    </div>
+                </div>
+    
+                <div class="row">
+                    <div class="col-12 instrucoes">
+                        <span style="width: 100%; float: left;"><strong>Instruções:</strong></span>
+                        <ol>
+                            <li>O botão de "Copiar Notas", copia a coluna MÉDIA DA NOTA para a coluna NOTA CANVAS, desde que o campo esteja vazio! Se já houver uma nota lançada ele ignora a cópia para evitar perda de dados.</li>
+                            <li>Avalie os trabalhos que não tem nota média (porque entregaram depois, ou os pares não avaliaram o trabalho), e lance na coluna NOTA DO CANVAS. É possível avaliar o trabalho fazendo download do arquivo enviado na coluna ENTREGA / LINK</li>
+                            <li>Quando o lançamento estiver finalizado o botão ENVIAR PARA O CANVAS sincroniza as notas lançadas com o LMS Canvas da PUC Minas. Observe que as notas alteradas ficam com o cortono da cor azul.</li>
+                            <li>Se quiser visualizar somente os alunos que não entregaram a avaliação, digite na pesquisa: "não". Se quiser visualizar os que estão com avaliação pendente, digite: "---". Se quiser os que estão sem avaliadores, digite: "sem avaliador".</li>
+                            <li>As notas enviadas ao Canvas por esse sistema são adicionadas a uma fila de processamento. Em tumas grande (> 200 alunos) as notas podem demorar até 5 minutos para serem publicadas. Após esse período, os alunos já podem ver as notas no Gradebook.</li>
+                        </ol>
+                    </div>
+    
+                    <div class="col-12 instrucoes">
+                        <div><strong>Penalidade por falta de participação</strong><br>Caso o aluno não tenha participado a avaliação por pares ou não tenha enviado comentários na sua avaliação, pode-se optar pela aplicação de penalidade. Informe o comentário a ser aplicado e a pontos a serem descontados da média calculada.</div>
+                        <div class="d-flex">
+                            <div class="form-group">
+                                <label for="textoPenalidade" class="w-100">Comentário</label>
+                                <input type="text" id="textoPenalidade"  style="width: 600px;"><br>
+                            </div>
+                            <div class="form-group">
+                                <label for="valorPenalidade" class="w-100">Pontuação de Penalidade</label>
+                                <input type="text" id="valorPenalidade" value="3" style="width: 50px;">
+                            </div>
+                        </div>
+                    </div>                
+                    <div class="col-12">
+                        <hr style="margin-top: 20px; margin-bottom: 20px;">
+                    </div>
+                </div>
+    
+    
+                <table id="dados" class="table table-striped nowrap table-bordered" style="width:100%">
+                    <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Grupo</th>
+                        <th>Avaliação dos Pares</th>
+                        <th>Detalhes</th>
+                        <th>Média da Nota</th>
+                        <th>Penalidade</th>
+                        <th>Nota do Canvas</th>
+                    </tr>
+                    </thead>
+                    <tbody id="resultados">
+                    </tbody>
+                </table>
+    
+            </div>
+    
+    
+        </div>
+    
+    
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://kit.fontawesome.com/06c888e4fd.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedheader/3.1.7/js/dataTables.fixedHeader.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.4/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.4/js/responsive.bootstrap.min.js"></script>
+    <script src="js/app.js"> </script>
+</body>
+</html>

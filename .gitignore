@@ -1,0 +1,45 @@
+# Arquivos de sistema do macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Dependências do PHP (gerenciadas pelo Composer)
+/vendor/
+
+# Arquivos de ambiente e sensíveis
+.env
+.env.backup
+.env.local
+*.env
+
+# Diretórios de build e pacotes (como Node/npm/yarn)
+/node_modules/
+npm-debug.log
+yarn-error.log
+yarn-debug.log
+
+# Configurações específicas de IDEs e editores
+.idea/
+.vscode/
+*.swp
+*.swo
+.project
+.buildpath
+.settings/
+
+# Arquivos de log e cache
+*.log
+*.sqlite
+/storage/*.key
+/storage/framework/cache/data/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/storage/logs/*
+
+# Arquivos de upload ou cache público que não devem ser versionados
+/public/storage
+/public/hot

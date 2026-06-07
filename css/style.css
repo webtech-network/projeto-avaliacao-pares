@@ -1,0 +1,73 @@
+.principal{ margin-top: 70px; margin-bottom: 20px; display: none;}
+
+.aguardando{margin-top: 70px; }
+
+.nota_canvas{ width: 65px;}
+
+/* .avaliador{ float: left; width: 100%;} */
+
+.instrucoes p { font-size: 12px;}
+
+.alterado{ border: 2px solid blue;}
+
+.navbar{ background: #ededed; z-index: 999 !important; }
+
+.navbar h3{ font-size: 16px;}
+
+.form-control{ font-size: 0.7rem;}
+
+.navbar-expand-lg{ justify-content: space-between;}
+
+.navbar-collapse{ flex-grow: unset;}
+
+.navbar-toggler{ background: darkgray; }
+
+#token{ min-width: 350px;}
+
+.legenda span { font-size: 12px; padding: 5px; }
+
+.legenda2 span {
+    width: 100%;
+    float: left;
+    padding: 10px;
+}
+.legenda2 span i{ font-size: 24px; }
+
+.botoes_acao{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.botoes_acao button{ margin-right: 10px; }
+
+.carregar{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-image: url("../img/loading1.gif");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 128px;
+    background-color: rgba(255,255,255,0.6);
+    z-index: 9999;
+    top:0px;
+    display: none;
+}
+
+@media (max-width: 900px) {
+    .legenda span {
+        width: 100%;
+        float: left;
+        font-size: 12px;
+    }
+    .botoes_acao{
+        align-items: stretch;
+    }
+
+}
+
+
+table.dataTable.nowrap td.child {
+    white-space: normal !important;
+}
