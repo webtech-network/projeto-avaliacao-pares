@@ -283,7 +283,7 @@ var procesarTabela = function(){
         lengthMenu:[[25,50,100,-1],[25,50,100,"Todos"]],
         "pageLength":100,
         "language": {
-            "url": "http://cdn.datatables.net/plug-ins/1.10.21/i18n/Portuguese-Brasil.json"
+            "url": "https://cdn.datatables.net/plug-ins/1.10.21/i18n/Portuguese-Brasil.json"
         }
     });
 
