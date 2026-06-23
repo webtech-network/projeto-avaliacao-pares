@@ -43,12 +43,13 @@ if(!empty($_POST['token']) && !empty($_POST['course']) && !empty($_POST['assignm
         "http" => [
             "method" => "GET",
             'header' => [
-                "Accept: application/json\r\n",
+                "Accept: application/json",
                 "Authorization: Bearer $token",
                 "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
                 "Content-Type: application/json",
                 "cache-control: no-cache"
             ]
+        ]
     ];
     $context = stream_context_create($opts);
 
