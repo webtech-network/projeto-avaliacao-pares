@@ -26,6 +26,12 @@ RUN a2enmod rewrite headers
 RUN mv "$PHP_INI_DIR/php.ini-development" "$PHP_INI_DIR/php.ini"
 RUN sed -ri 's/display_errors = Off/display_errors = On/g' "$PHP_INI_DIR/php.ini"
 
+# Garante que os erros do PHP também sejam registrados no error.log do Apache
+# RUN echo 'log_errors = On' > "$PHP_INI_DIR/conf.d/docker-php-logging.ini"
+
+# Declara o diretório de logs do Apache como ponto de montagem
+# VOLUME ["/var/log/apache2"]
+
 # Expose port 80 for Apache
 EXPOSE 80
 

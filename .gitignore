@@ -1,3 +1,5 @@
+docker-compose.yml
+
 # Arquivos de sistema do macOS
 .DS_Store
 .DS_Store?
@@ -18,6 +20,7 @@ Thumbs.db
 
 # Diretórios de build e pacotes (como Node/npm/yarn)
 /node_modules/
+/logs/
 npm-debug.log
 yarn-error.log
 yarn-debug.log
